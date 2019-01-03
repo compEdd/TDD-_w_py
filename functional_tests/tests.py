@@ -74,7 +74,7 @@ class NewVisitorTest(LiveServerTestCase):
 		inputbox.send_keys(Keys.ENTER)
 		self.wait_for_row_in_list_table('1: Buy milk')
 
-		francis_list_url = self.browser.current_url
+		francis_list_urls = self.browser.current_url
 		self.assertRegex(francis_list_urls, '/lists/.+')
 		self.assertNotEqual(francis_list_urls, edith_list_url)
 
@@ -85,3 +85,25 @@ class NewVisitorTest(LiveServerTestCase):
 
 #		self.fail('Finish the test!')
 
+	def test_layout_and_styling(self):
+
+		self.browser.get(self.live_server_url)
+		self.browser.set_window_size(1024, 768)
+
+		inputbox =  self.browser.find_element_by_id('id_new_item')
+		self.assertAlmostEqual(
+			inputbox.location['x'] + inputbox.size['width'] / 2,
+			512,
+			delta=10
+		)
+
+		inputbox.send_keys('testing')
+		inputbox.send_keys(Keys.ENTER)
+		self.wait_for_row_in_list_table('1: testing')
+
+		inputbox =  self.browser.find_element_by_id('id_new_item')
+		self.assertAlmostEqual(
+			inputbox.location['x'] + inputbox.size['width'] / 2,
+			512,
+			delta=10
+		)
